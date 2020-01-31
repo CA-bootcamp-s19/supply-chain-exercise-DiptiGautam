@@ -86,7 +86,7 @@ contract SupplyChain {
   }
 
   modifier sold(uint _sku){
-    require(items[_sku].state == State.Sold && items[_sku].buyer != address(0_, "Item hasn't been sold yet!");
+    require(items[_sku].state == State.Sold && items[_sku].buyer != address(0), "Item hasn't been sold yet!");
     _;
   }
 
@@ -125,7 +125,7 @@ contract SupplyChain {
     forSale(sku) paidEnough(items[sku].price) checkValue(sku) public payable
   {
     items[sku].buyer = msg.sender;
-    items[sku].state = State.sold;
+    items[sku].state = State.Sold;
     items[sku].seller.transfer(items[sku].price);
 
       emit LogSold(sku);
@@ -140,7 +140,7 @@ contract SupplyChain {
     Item storage itm = items[sku];
     itm.state = State.Shipped;
   }
-
+  
   /* Add 2 modifiers to check if the item is shipped already, and that the person calling this function
   is the buyer. Change the state of the item to received. Remember to call the event associated with this function!*/
   function receiveItem(uint sku)
